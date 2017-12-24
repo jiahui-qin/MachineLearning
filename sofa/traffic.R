@@ -18,3 +18,14 @@ plot(cvfit)
 ##这里选择lambda.min预测，效果最好
 result <- predict(cvfit, newx, type="class", s="lambda.min")
 write.csv(result,file = "result.csv")
+
+
+#randomFroest
+library(randomForest)
+test <-test[,-1]
+train <-train[,-1]
+sapply(test, as.factor)
+sapply(train, as.factor)
+traffic.rf <- randomForest(Evaluation ~ ., data=train, type = 'classification')
+result <- predict(traffic.rf, test)
+write.csv(result,file = "result.csv")
