@@ -18,7 +18,7 @@ plot(cvfit)
 ##这里选择lambda.min预测，效果最好
 result <- predict(cvfit, newx, type="class", s="lambda.min")
 write.csv(result,file = "result.csv")
-
+#这里没有看答案要求，要求是概率，我选了classification上去，所以结果很差，再改一遍应该会好很多。
 
 #randomFroest
 library(randomForest)
@@ -29,3 +29,4 @@ sapply(train, as.factor)
 traffic.rf <- randomForest(Evaluation ~ ., data=train, type = 'classification')
 result <- predict(traffic.rf, test)
 write.csv(result,file = "result.csv")
+#随机森林的结果很好，和第一名的差异也非常小
