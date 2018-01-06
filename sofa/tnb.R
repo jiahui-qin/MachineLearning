@@ -41,3 +41,12 @@ result <- predict(train_cv_mse, test1, s="lambda.min")
 
 write.csv(result,file = "result.csv")
 getwd()
+
+'''
+1.6晚上修改：删除一部分数据集之后效果反而更差了，这次用全部数据集试试，同时换一下填补缺失值的方法
+这次填补缺失值用的是 norm： bayesian liner regression,要求数据全是数值型，其实填补的话我感觉用kmeans是最好的吧，明天再试试。
+关于预测中用1se还是min，试试1se的结果吧。
+'''
+train_mice <- mice(train,m=5,maxit=50,methoh='norm',seed=500)
+
+result<-predict(cvtrain, test_c, s = 'lambda.1se')
