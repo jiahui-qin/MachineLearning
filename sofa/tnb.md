@@ -1,3 +1,13 @@
+[天池精准医疗大赛——人工智能辅助糖尿病遗传风险预测](https://tianchi.aliyun.com/competition/introduction.htm?spm=5176.100068.5678.1.53bde188MOYKlg&raceId=231638)
+
+| 时间       | 成绩           | 方法  | 备注 |
+| ------------- |:-------------:| -----:|-----:|
+| 1/5     | 0.9004 | mice填补+lasso回归 | |
+| 1/6     | 0.9403  |   mice填补+lasso回归 | 删掉了缺失特征较多的样本，性别one-hot |
+| 1/7 |     0.9391  |  mice填补(贝叶斯回归)+lasso回归 | 进行predict时选择1se |
+| 1/8 | 0.9487 | 随机森林填补 + lasso回归 | predict选择1se,test数据集填补用的还是mice |
+| 1/8 | 0.9260 | 随机森林填补 + lasso回归 | predict选择min，其它同上 |
+
 train<-read_csv("F:\\sofa\\tnb\\train.csv")
 colnames(train)<-1:40
 summary(train)
