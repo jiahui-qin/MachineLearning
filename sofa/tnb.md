@@ -7,6 +7,13 @@
 | 1/7 |     0.9391  |  mice填补(贝叶斯回归)+lasso回归 | 进行predict时选择1se |
 | 1/8 | 0.9487 | 随机森林填补 + lasso回归 | predict选择1se,test数据集填补用的还是mice |
 | 1/8 | 0.9260 | 随机森林填补 + lasso回归 | predict选择min，其它同上 |
+| 1/9 | 0.8980 | 随机森林填补 + lasso回归 | 将男女数据标记为1，-1，同时对age数据做了中心化，predict选择min |
+
+    library(mice)
+    library(readr)
+    library(randomFoerst)
+    library(glmnet)
+
 
 train<-read_csv("F:\\sofa\\tnb\\train.csv")
 colnames(train)<-1:40
