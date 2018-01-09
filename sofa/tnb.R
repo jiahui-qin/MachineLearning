@@ -12,6 +12,7 @@ library(mice)
 '''
 train<-read_csv("F:\\sofa\\tnb\\train16.csv")
 train$'1_for_man'<-as.numeric(train$'1_for_man')
+train<-train[-573,]
 summary(train)
 
 #删掉一行中缺失值大于10个的,删完还有4430个
@@ -23,7 +24,7 @@ train1_mice<-mice(train)
 train1_c <- complete(train1_mice)
 
 #lasso回归，用mse作为回归预测标准，预测ROC，10折交叉验证
-train_cv_mse = cv.glmnet(x, y,  type.measure = "mse"， nfolds = 10)
+train_cv_mse = cv.glmnet(x, y,  type.measure = "mse", nfolds = 10)
 plot(train_cv_mse)
 
 
@@ -49,4 +50,29 @@ getwd()
 '''
 train_mice <- mice(train,m=5,maxit=50,methoh='norm',seed=500)
 
-result<-predict(cvtrain, test_c, s = 'lambda.1se')
+result<-predict(cvtrain, test_c, s = 'lambda.1se')、
+
+'''
+1.8 观察特征
+先观察一下train里血糖的分布，较低水平的占绝大多数，有一个特别高(>35),分布极不均衡
+qplot(train$`38`)
+
+关于年龄的处理：train组和test组应该做相同的处理，中位数是45，做减45除以10
+
+查看每一个变量缺失值比例：
+miss<-function(x){sum(is.na(x)/length(x)*100)}
+apply(train,2,miss)
+
+
+'''
+
+library(randomForst)
+train.imputed<-rfImpute(yyy~., train) #使用随机森林进行缺失值插入
+train.rf<-randomForest(x,y,mtry = 3, importance = TRUE)
+plot(train.rf)
+importance(train.rf)  #train.rf里各种变量的重要性
+
+##test数据集没有应变量只能用mice进行填补
+#这次提交一个1se结果和一个min结果，看哪个比较好
+
+
