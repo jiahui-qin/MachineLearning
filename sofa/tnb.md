@@ -9,8 +9,9 @@
 | 1/8 | 0.9260 | 随机森林填补 + lasso回归 | predict选择min，其它同上 |
 | 1/9 | 0.8980 | 随机森林填补 + lasso回归 | 将男女数据标记为1，-1，同时对age数据做了中心化，predict选择min |
 | 1/10 | 0.900 | mice填补+lasso回归 | 填补数据不应该使用响应数据 |
-| 1/11 | | mice填补+lasso回归| 填补选择所有数据集一起填补 |
-| 1/11 | | mice填补 + 随机森林 | 填补选择所有数据一起填补 | 
+| 1/11 | 0.9188 | mice填补+lasso回归| 填补选择所有数据集一起填补 |
+| 1/11 | 0.8892 | mice填补 + 随机森林 | 填补选择所有数据一起填补 | 
+| 1/12 | 1.0107 | mcie填补+SVR | 结果好差！ |
 
     library(mice)
     library(readr)
@@ -101,3 +102,28 @@ importance(train.rf)  #train.rf里各种变量的重要性
 
 1.10修改:
 对所有数据做了中心化，数据填补的时候不应该用响应的数据
+
+1.11修改：
+换个回归方法，还是用mice填补，但是回归的方法选择SVR(support vector regression)
+先总结一下前期的数据处理工作，方便下一次使用：
+
+    library(mice)
+    library(readr)
+    library(randomFoerst)
+    library(glmnet)
+
+    dataset <- read_csv(file)
+    dataset_mice <- scale(dataset[,1:34])
+    dataset_mice <- mice(dataset_mice)
+    dataset_mice <- complete(dataset_mice)
+    x <- as.matrix(dataset_mice[1:5641,])
+    y <- as.matrix(dataset[1:5641,35])
+    test <- as.matrix(dataset_mice[5642:6641,])
+
+    '''
+    data processing
+    '''
+    result <- predict(train_cv_mse, test1, s="lambda.min")
+
+    write.csv(result,file = "result.csv")
+    getwd()
